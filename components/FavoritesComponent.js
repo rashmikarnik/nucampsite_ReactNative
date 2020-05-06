@@ -6,6 +6,7 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import Swipeout from 'react-native-swipeout';
 import { deleteFavorite } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
 
 
 const mapStateToProps = state => {
@@ -27,7 +28,7 @@ class Favorites extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        const renderFavoriteItem = ({item}) => {
+        const renderFavoriteItem = ({ item }) => {
             const rightButton = [
                 {
                     text: 'Delete',
@@ -44,24 +45,26 @@ class Favorites extends Component {
                                 },
                                 {
                                     text: 'OK',
-                                    onPress: () =>  this.props.deleteFavorite(item.id)
+                                    onPress: () => this.props.deleteFavorite(item.id)
                                 }
                             ],
                             { cancelable: false }
                         )
                     }
-                   
+
                 }
             ];
 
             return (
                 <Swipeout right={rightButton} autoClose={true}>
-                <ListItem
-                    title={item.name}
-                    subtitle={item.description}
-                    leftAvatar={{ source: { uri: baseUrl + item.image } }}
-                    onPress={() => navigate('CampsiteInfo', { campsiteId: item.id })}
-                />
+                    <Animatable.View animation='fadeInRightBig' duration={2000} delay={1000}>
+                        <ListItem
+                            title={item.name}
+                            subtitle={item.description}
+                            leftAvatar={{ source: { uri: baseUrl + item.image } }}
+                            onPress={() => navigate('CampsiteInfo', { campsiteId: item.id })}
+                        />
+                    </Animatable.View>
                 </Swipeout>
 
             );
